@@ -49,6 +49,13 @@ public class Handler {
                 .onErrorResume(e -> ServerResponse.badRequest().bodyValue("Error al momento de agregar Producto a Sucursal :" + e.getMessage()));
     }
 
+    public Mono<ServerResponse> obtenerProductoMayorStock(ServerRequest serverRequest) {
+
+        var productos = productoUseCase.obtenerProductoMayorStock();
+
+        return ServerResponse.ok().contentType(APPLICATION_JSON).body(productos, Producto.class);
+    }
+
     public Mono<ServerResponse> modificarStock(ServerRequest serverRequest) {
 
         return serverRequest

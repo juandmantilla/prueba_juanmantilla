@@ -5,8 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
-import static org.springframework.web.reactive.function.server.RequestPredicates.PUT;
+import static org.springframework.web.reactive.function.server.RequestPredicates.*;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Configuration
@@ -17,6 +16,7 @@ public class RouterRest {
                 .andRoute(POST("/franquicia/actualizarNombre"), handler::actualizarNombreFranquicia)
                 .andRoute(PUT("/producto/agregarProducto"), handler::agregarProductoASucursal)
                 .andRoute(POST("/producto/modificarStock"), handler::modificarStock)
+                .andRoute(GET("/producto/mayorStock"), handler::obtenerProductoMayorStock)
                 .andRoute(PUT("/sucursal/agregarSucursal"), handler::agregarSucursalAFranquicia).
                 andRoute(POST("/sucursal/actualizarNombre"), handler::actualizarNombreSucursal);
     }
