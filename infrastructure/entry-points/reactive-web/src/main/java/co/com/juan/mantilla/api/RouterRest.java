@@ -5,16 +5,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
+import static org.springframework.web.reactive.function.server.RequestPredicates.PUT;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Configuration
 public class RouterRest {
     @Bean
     public RouterFunction<ServerResponse> routerFunction(Handler handler) {
-        return route(GET("/api/usecase/path"), handler::listenGETUseCase)
-                .andRoute(POST("/api/usecase/otherpath"), handler::listenPOSTUseCase)
-                .and(route(GET("/api/otherusercase/path"), handler::listenGETOtherUseCase));
+        return route(PUT("/franquicia/agregarFranquicia"), handler::agregarFranquicia)
+                .andRoute(POST("/franquicia/actualizarNombre"), handler::actualizarNombreFranquicia)
+                .andRoute(PUT("/producto/agregarProducto"), handler::agregarProductoASucursal)
+                .andRoute(POST("/producto/modificarStock"), handler::modificarStock)
+                .andRoute(PUT("/sucursal/agregarSucursal"), handler::agregarSucursalAFranquicia).
+                andRoute(POST("/sucursal/actualizarNombre"), handler::actualizarNombreSucursal);
     }
 }

@@ -1,14 +1,15 @@
 package co.com.juan.mantilla.model.sucursal;
-import lombok.Builder;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-//import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
 
 @Getter
 @Setter
-//@NoArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
 public class Sucursal {
+
+    private Integer id;
+    private String nombre;
+    private Integer franquiciaId;
 }

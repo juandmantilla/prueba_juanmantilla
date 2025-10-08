@@ -1,14 +1,13 @@
 package co.com.juan.mantilla.model.franquicia;
-import lombok.Builder;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-//import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
 
 @Getter
 @Setter
-//@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder(toBuilder = true)
 public class Franquicia {
+    private Integer id;
+    private String nombre;
 }
