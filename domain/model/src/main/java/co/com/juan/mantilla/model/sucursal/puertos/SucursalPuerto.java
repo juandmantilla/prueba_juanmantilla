@@ -1,9 +1,9 @@
-package co.com.juan.mantilla.model.sucursal.gateways;
+package co.com.juan.mantilla.model.sucursal.puertos;
 
 import co.com.juan.mantilla.model.sucursal.Sucursal;
 import reactor.core.publisher.Mono;
 
-public interface SucursalGateway {
+public interface SucursalPuerto {
 
     Mono<Sucursal> agregarSucursalAFranquicia(Sucursal sucursal);
 

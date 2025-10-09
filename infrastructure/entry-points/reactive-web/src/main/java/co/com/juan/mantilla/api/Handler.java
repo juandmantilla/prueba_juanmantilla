@@ -1,11 +1,12 @@
 package co.com.juan.mantilla.api;
 
+import co.com.juan.mantilla.api.dtos.MensajeRespuestaDTO;
 import co.com.juan.mantilla.model.franquicia.Franquicia;
 import co.com.juan.mantilla.model.producto.Producto;
 import co.com.juan.mantilla.model.sucursal.Sucursal;
-import co.com.juan.mantilla.usecase.FranquiciaUseCase;
-import co.com.juan.mantilla.usecase.ProductoUseCase;
-import co.com.juan.mantilla.usecase.SucursalUseCase;
+import co.com.juan.mantilla.usecase.FranquiciaCasoUso;
+import co.com.juan.mantilla.usecase.ProductoCasoUso;
+import co.com.juan.mantilla.usecase.SucursalCasoUso;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -18,15 +19,15 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 @RequiredArgsConstructor
 public class Handler {
 
-    private final FranquiciaUseCase franquiciaUseCase;
-    private final ProductoUseCase productoUseCase;
-    private final SucursalUseCase sucursalUseCase;
+    private final FranquiciaCasoUso franquiciaCasoUso;
+    private final ProductoCasoUso productoCasoUso;
+    private final SucursalCasoUso sucursalCasoUso;
 
     public Mono<ServerResponse> agregarFranquicia(ServerRequest serverRequest) {
 
         return serverRequest
                 .bodyToMono(Franquicia.class)
-                .flatMap(franquiciaUseCase::agregarFranquicia)
+                .flatMap(franquiciaCasoUso::agregarFranquicia)
                 .flatMap(saved -> ServerResponse.ok().contentType(APPLICATION_JSON)
                         .bodyValue(saved))
                 .onErrorResume(e -> ServerResponse.badRequest().bodyValue("Error al momento de agregar la Franquicia :" + e.getMessage()));
@@ -35,7 +36,7 @@ public class Handler {
     public Mono<ServerResponse> actualizarNombreFranquicia(ServerRequest serverRequest) {
 
         return serverRequest.bodyToMono(Franquicia.class)
-                .flatMap(franquiciaUseCase::actualizarNombreFranquicia)
+                .flatMap(franquiciaCasoUso::actualizarNombreFranquicia)
                 .flatMap(updated -> ServerResponse.ok().contentType(APPLICATION_JSON).bodyValue(updated))
                 .onErrorResume(e -> ServerResponse.badRequest().bodyValue("Error al momento de actualizar el nombre de la franquicia :" + e.getMessage()));
     }
@@ -44,14 +45,14 @@ public class Handler {
 
         return serverRequest
                 .bodyToMono(Producto.class)
-                .flatMap(productoUseCase::agregarProductoASucursal)
+                .flatMap(productoCasoUso::agregarProductoASucursal)
                 .flatMap(saved -> ServerResponse.ok().contentType(APPLICATION_JSON).bodyValue(saved))
-                .onErrorResume(e -> ServerResponse.badRequest().bodyValue("Error al momento de agregar Producto a Sucursal :" + e.getMessage()));
+                .onErrorResume(e -> ServerResponse.badRequest().bodyValue(MensajeRespuestaDTO.builder().mensaje(e.getMessage())));
     }
 
     public Mono<ServerResponse> obtenerProductoMayorStock(ServerRequest serverRequest) {
 
-        var productos = productoUseCase.obtenerProductoMayorStock();
+        var productos = productoCasoUso.obtenerProductoMayorStock();
 
         return ServerResponse.ok().contentType(APPLICATION_JSON).body(productos, Producto.class);
     }
@@ -60,7 +61,7 @@ public class Handler {
 
         return serverRequest
                 .bodyToMono(Producto.class)
-                .flatMap(productoUseCase::modificarStock)
+                .flatMap(productoCasoUso::modificarStock)
                 .flatMap(updated -> ServerResponse.ok().contentType(APPLICATION_JSON).bodyValue(updated))
                 .onErrorResume(e -> ServerResponse.badRequest().bodyValue("Error al momento de modificar el Stock de Producto :" + e.getMessage()));
     }
@@ -69,7 +70,7 @@ public class Handler {
 
         return serverRequest
                 .bodyToMono(Sucursal.class)
-                .flatMap(sucursalUseCase::agregarSucursalAFranquicia)
+                .flatMap(sucursalCasoUso::agregarSucursalAFranquicia)
                 .flatMap(saved -> ServerResponse.ok().contentType(APPLICATION_JSON).bodyValue(saved))
                 .onErrorResume(e -> ServerResponse.badRequest().bodyValue("Error al momento de agregar una Sucursal : " + e.getMessage()));
     }
@@ -78,7 +79,7 @@ public class Handler {
 
         return serverRequest
                 .bodyToMono(Sucursal.class)
-                .flatMap(sucursalUseCase::actualizarNombreSucursal)
+                .flatMap(sucursalCasoUso::actualizarNombreSucursal)
                 .flatMap(saved -> ServerResponse.ok().contentType(APPLICATION_JSON).bodyValue(saved))
                 .onErrorResume(e -> ServerResponse.badRequest().bodyValue("Error al momento de actualizar el nombre de la Sucursal: " + e.getMessage()));
     }

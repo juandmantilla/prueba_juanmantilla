@@ -1,7 +1,8 @@
 package co.com.juan.mantilla.r2dbc.producto;
 
 import co.com.juan.mantilla.model.producto.Producto;
-import co.com.juan.mantilla.model.producto.gateways.ProductoGateway;
+import co.com.juan.mantilla.model.producto.puertos.ProductoPuerto;
+import co.com.juan.mantilla.r2dbc.helper.PruebaExcepcion;
 import co.com.juan.mantilla.r2dbc.helper.ReactiveAdapterOperations;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivecommons.utils.ObjectMapper;
@@ -11,21 +12,21 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @Component
-public class ProductoRepositoryAdapter extends ReactiveAdapterOperations<Producto, ProductoEntity, Integer, ProductoRepository> implements ProductoGateway {
+public class ProductoRepositorioAdaptador extends ReactiveAdapterOperations<Producto, ProductoEntidad, Integer, ProductoRepositorio> implements ProductoPuerto {
     
-    public ProductoRepositoryAdapter(ProductoRepository repository, ObjectMapper mapper) {
+    public ProductoRepositorioAdaptador(ProductoRepositorio repository, ObjectMapper mapper) {
         super(repository, mapper, d -> mapper.map(d, Producto.class));
     }
 
     @Override
     public Mono<Producto> agregarProductoASucursal(Producto producto) {
         log.info("Ejecutando el guardado de entidad Producto");
-        return repository.save(mapper.map(producto, ProductoEntity.class))
+        return repository.save(mapper.map(producto, ProductoEntidad.class))
                 .map(this::toEntity)
                 .onErrorResume(
                         e -> {
                             log.error("Error ejecutando el guardado de la entidad Producto", e);
-                            return Mono.error(new RuntimeException("Error al intentar guardar la entidad Producto", e));
+                            return Mono.error(new PruebaExcepcion("Error al intentar guardar la entidad Producto", e));
                         });
     }
 
@@ -42,7 +43,7 @@ public class ProductoRepositoryAdapter extends ReactiveAdapterOperations<Product
                 .onErrorResume(
                         e -> {
                             log.error("Error al modificar el Stock de la entidad Producto", e);
-                            return Mono.error(new RuntimeException("Error al modificar el Stock de Producto", e));
+                            return Mono.error(new PruebaExcepcion("Error al modificar el Stock de Producto", e));
                         }
                 );
     }
@@ -59,7 +60,7 @@ public class ProductoRepositoryAdapter extends ReactiveAdapterOperations<Product
                 ).onErrorResume(
                         e -> {
                             log.error("Error al obtener los Productos con mayor Stock", e);
-                            return Flux.error(new RuntimeException("Error al obtener Productos con mayor Stock", e));
+                            return Flux.error(new PruebaExcepcion("Error al obtener Productos con mayor Stock", e));
                         }
                 );
     }

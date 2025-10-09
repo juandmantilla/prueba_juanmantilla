@@ -19,19 +19,19 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
-class ProductoRepositoryAdapterTest {
+class ProductoRepositorioAdaptadorTest {
 
     @Mock
-    private ProductoRepository repository;
+    private ProductoRepositorio repository;
 
     @Mock
     private ObjectMapper mapper;
 
     @InjectMocks
-    private ProductoRepositoryAdapter adapter;
+    private ProductoRepositorioAdaptador adapter;
 
     private Producto producto;
-    private ProductoEntity entity;
+    private ProductoEntidad entity;
     private ProductoSucursalView view;
 
     @BeforeEach
@@ -45,7 +45,7 @@ class ProductoRepositoryAdapterTest {
                 .sucursalId(5)
                 .build();
 
-        entity = new ProductoEntity();
+        entity = new ProductoEntidad();
         entity.setId(1);
         entity.setNombre("Producto Test");
         entity.setStock(10);
@@ -76,7 +76,7 @@ class ProductoRepositoryAdapterTest {
 
     @Test
     void agregarProductoASucursal_DeberiaGuardarCorrectamente() {
-        when(mapper.map(producto, ProductoEntity.class)).thenReturn(entity);
+        when(mapper.map(producto, ProductoEntidad.class)).thenReturn(entity);
         when(repository.save(entity)).thenReturn(Mono.just(entity));
         when(mapper.map(entity, Producto.class)).thenReturn(producto);
 
@@ -91,7 +91,7 @@ class ProductoRepositoryAdapterTest {
 
     @Test
     void agregarProductoASucursal_DeberiaLanzarErrorAlFallar() {
-        when(mapper.map(producto, ProductoEntity.class)).thenReturn(entity);
+        when(mapper.map(producto, ProductoEntidad.class)).thenReturn(entity);
         when(repository.save(entity)).thenReturn(Mono.error(new RuntimeException("DB error")));
 
         Mono<Producto> result = adapter.agregarProductoASucursal(producto);
@@ -107,11 +107,11 @@ class ProductoRepositoryAdapterTest {
     @Test
     void modificarStock_DeberiaActualizarStockCorrectamente() {
         when(repository.findById(1)).thenReturn(Mono.just(entity));
-        when(repository.save(any(ProductoEntity.class)))
+        when(repository.save(any(ProductoEntidad.class)))
                 .thenAnswer(invocation -> Mono.just(invocation.getArgument(0)));
-        when(mapper.map(any(ProductoEntity.class), eq(Producto.class)))
+        when(mapper.map(any(ProductoEntidad.class), eq(Producto.class)))
                 .thenAnswer(invocation -> {
-                    ProductoEntity e = invocation.getArgument(0);
+                    ProductoEntidad e = invocation.getArgument(0);
                     return Producto.builder()
                             .id(e.getId())
                             .nombre(e.getNombre())
@@ -130,7 +130,7 @@ class ProductoRepositoryAdapterTest {
                 .verifyComplete();
 
         verify(repository).findById(1);
-        verify(repository).save(any(ProductoEntity.class));
+        verify(repository).save(any(ProductoEntidad.class));
     }
 
     @Test

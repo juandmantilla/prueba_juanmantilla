@@ -1,10 +1,10 @@
-package co.com.juan.mantilla.model.producto.gateways;
+package co.com.juan.mantilla.model.producto.puertos;
 
 import co.com.juan.mantilla.model.producto.Producto;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface ProductoGateway {
+public interface ProductoPuerto {
 
     Mono<Producto> agregarProductoASucursal(Producto producto);
     

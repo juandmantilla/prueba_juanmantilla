@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 
-class FranquiciaRepositoryAdapterTest {
+class FranquiciaRepositorioAdaptadorTest {
 
     @Mock
     private FranquiciaRepository repository;
@@ -27,10 +27,10 @@ class FranquiciaRepositoryAdapterTest {
     private ObjectMapper mapper;
 
     @InjectMocks
-    private FranquiciaRepositoryAdapter adapter;
+    private FranquiciaRepositorioAdaptador adapter;
 
     private Franquicia franquicia;
-    private FranquiciaEntity entity;
+    private FranquiciaEntidad entity;
 
     @BeforeEach
     void setUp() {
@@ -39,7 +39,7 @@ class FranquiciaRepositoryAdapterTest {
         franquicia.setId(1);
         franquicia.setNombre("Franquicia Test");
 
-        entity = new FranquiciaEntity();
+        entity = new FranquiciaEntidad();
         entity.setId(1);
         entity.setNombre("Franquicia Test");
     }
@@ -47,7 +47,7 @@ class FranquiciaRepositoryAdapterTest {
     @Test
     void agregarFranquicia_DeberiaGuardarYDevolverEntidad() {
 
-        when(mapper.map(franquicia, FranquiciaEntity.class)).thenReturn(entity);
+        when(mapper.map(franquicia, FranquiciaEntidad.class)).thenReturn(entity);
         when(repository.save(entity)).thenReturn(Mono.just(entity));
         when(mapper.map(entity, Franquicia.class)).thenReturn(franquicia);
 
@@ -64,7 +64,7 @@ class FranquiciaRepositoryAdapterTest {
     @Test
     void agregarFranquicia_DeberiaRetornarErrorSiFallaGuardado() {
 
-        when(mapper.map(franquicia, FranquiciaEntity.class)).thenReturn(entity);
+        when(mapper.map(franquicia, FranquiciaEntidad.class)).thenReturn(entity);
         when(repository.save(entity)).thenReturn(Mono.error(new RuntimeException("DB error")));
 
         Mono<Franquicia> result = adapter.agregarFranquicia(franquicia);
@@ -80,14 +80,14 @@ class FranquiciaRepositoryAdapterTest {
 
         String nuevoNombre = "Franquicia Actualizada";
         when(repository.findById(1)).thenReturn(Mono.just(entity));
-        when(repository.save(any(FranquiciaEntity.class))).thenAnswer(invocation -> {
-            FranquiciaEntity e = invocation.getArgument(0);
+        when(repository.save(any(FranquiciaEntidad.class))).thenAnswer(invocation -> {
+            FranquiciaEntidad e = invocation.getArgument(0);
             e.setNombre(nuevoNombre);
             return Mono.just(e);
         });
-        when(mapper.map(any(FranquiciaEntity.class), eq(Franquicia.class)))
+        when(mapper.map(any(FranquiciaEntidad.class), eq(Franquicia.class)))
                 .thenAnswer(invocation -> {
-                    FranquiciaEntity e = invocation.getArgument(0);
+                    FranquiciaEntidad e = invocation.getArgument(0);
                     Franquicia f = new Franquicia();
                     f.setId(e.getId());
                     f.setNombre(e.getNombre());
@@ -104,7 +104,7 @@ class FranquiciaRepositoryAdapterTest {
                 .verifyComplete();
 
         verify(repository).findById(1);
-        verify(repository).save(any(FranquiciaEntity.class));
+        verify(repository).save(any(FranquiciaEntidad.class));
     }
 
     @Test

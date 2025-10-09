@@ -17,18 +17,18 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
-class SucursalRepositoryAdapterTest {
+class SucursalReposiorioAdapterTest {
     @Mock
-    private SucursalRepository repository;
+    private SucursalReposiorio repository;
 
     @Mock
     private ObjectMapper mapper;
 
     @InjectMocks
-    private SucursalRepositoryAdapter adapter;
+    private SucursalRepositorioAdaptador adapter;
 
     private Sucursal sucursal;
-    private SucursalEntity entity;
+    private SucursalEntidad entity;
 
     @BeforeEach
     void setUp() {
@@ -38,14 +38,14 @@ class SucursalRepositoryAdapterTest {
         sucursal.setId(1);
         sucursal.setNombre("Sucursal Principal");
 
-        entity = new SucursalEntity();
+        entity = new SucursalEntidad();
         entity.setId(1);
         entity.setNombre("Sucursal Principal");
     }
 
     @Test
     void agregarSucursalAFranquicia_DeberiaGuardarCorrectamente() {
-        when(mapper.map(sucursal, SucursalEntity.class)).thenReturn(entity);
+        when(mapper.map(sucursal, SucursalEntidad.class)).thenReturn(entity);
         when(repository.save(entity)).thenReturn(Mono.just(entity));
         when(mapper.map(entity, Sucursal.class)).thenReturn(sucursal);
 
@@ -60,7 +60,7 @@ class SucursalRepositoryAdapterTest {
 
     @Test
     void agregarSucursalAFranquicia_DeberiaLanzarErrorAlFallar() {
-        when(mapper.map(sucursal, SucursalEntity.class)).thenReturn(entity);
+        when(mapper.map(sucursal, SucursalEntidad.class)).thenReturn(entity);
         when(repository.save(entity)).thenReturn(Mono.error(new RuntimeException("DB error")));
 
         Mono<Sucursal> result = adapter.agregarSucursalAFranquicia(sucursal);
@@ -77,15 +77,15 @@ class SucursalRepositoryAdapterTest {
     void actualizarNombreSucursal_DeberiaActualizarCorrectamente() {
         String nuevoNombre = "Sucursal Norte";
         when(repository.findById(1)).thenReturn(Mono.just(entity));
-        when(repository.save(any(SucursalEntity.class)))
+        when(repository.save(any(SucursalEntidad.class)))
                 .thenAnswer(invocation -> {
-                    SucursalEntity e = invocation.getArgument(0);
+                    SucursalEntidad e = invocation.getArgument(0);
                     e.setNombre(nuevoNombre);
                     return Mono.just(e);
                 });
-        when(mapper.map(any(SucursalEntity.class), eq(Sucursal.class)))
+        when(mapper.map(any(SucursalEntidad.class), eq(Sucursal.class)))
                 .thenAnswer(invocation -> {
-                    SucursalEntity e = invocation.getArgument(0);
+                    SucursalEntidad e = invocation.getArgument(0);
                     Sucursal s = new Sucursal();
                     s.setId(e.getId());
                     s.setNombre(e.getNombre());
@@ -102,7 +102,7 @@ class SucursalRepositoryAdapterTest {
                 .verifyComplete();
 
         verify(repository).findById(1);
-        verify(repository).save(any(SucursalEntity.class));
+        verify(repository).save(any(SucursalEntidad.class));
     }
 
     @Test

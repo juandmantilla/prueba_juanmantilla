@@ -1,25 +1,21 @@
 package co.com.juan.mantilla.usecase;
 
 import co.com.juan.mantilla.model.franquicia.Franquicia;
-import co.com.juan.mantilla.model.franquicia.gateways.FranquiciaGateway;
+import co.com.juan.mantilla.model.franquicia.puertos.FranquiciaPuerto;
 import lombok.RequiredArgsConstructor;
-
 import reactor.core.publisher.Mono;
 
 
 @RequiredArgsConstructor
-public class FranquiciaUseCase {
+public class FranquiciaCasoUso {
 
-    //private static final Logger log = LoggerFactory.getLogger(FranquiciaUseCase.class);
-    private final FranquiciaGateway repository;
+    private final FranquiciaPuerto repository;
 
     public Mono<Franquicia> agregarFranquicia(Franquicia franquicia) {
-       // log.info("Ejecutando caso de uso de Agregar Franquicia");
         return repository.agregarFranquicia(franquicia);
     }
 
     public Mono<Franquicia> actualizarNombreFranquicia(Franquicia franquicia) {
-//        log.info("Ejecutando caso de uso Actualizar Nombre Franquicia");
         return repository.actualizarNombreFranquicia(franquicia.getNombre(), franquicia.getId());
     }
 

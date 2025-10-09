@@ -1,7 +1,8 @@
 package co.com.juan.mantilla.r2dbc.sucursal;
 
 import co.com.juan.mantilla.model.sucursal.Sucursal;
-import co.com.juan.mantilla.model.sucursal.gateways.SucursalGateway;
+import co.com.juan.mantilla.model.sucursal.puertos.SucursalPuerto;
+import co.com.juan.mantilla.r2dbc.helper.PruebaExcepcion;
 import co.com.juan.mantilla.r2dbc.helper.ReactiveAdapterOperations;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivecommons.utils.ObjectMapper;
@@ -10,9 +11,9 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @Component
-public class SucursalRepositoryAdapter extends ReactiveAdapterOperations<Sucursal, SucursalEntity, Integer, SucursalRepository> implements SucursalGateway {
+public class SucursalRepositorioAdaptador extends ReactiveAdapterOperations<Sucursal, SucursalEntidad, Integer, SucursalReposiorio> implements SucursalPuerto {
 
-    public SucursalRepositoryAdapter(SucursalRepository repository, ObjectMapper mapper) {
+    public SucursalRepositorioAdaptador(SucursalReposiorio repository, ObjectMapper mapper) {
         super(repository, mapper, d -> mapper.map(d, Sucursal.class));
     }
 
@@ -20,12 +21,12 @@ public class SucursalRepositoryAdapter extends ReactiveAdapterOperations<Sucursa
     public Mono<Sucursal> agregarSucursalAFranquicia(Sucursal sucursal) {
         log.info("Ejecutando el guardado de entidad Sucursal");
         return repository
-                .save(mapper.map(sucursal, SucursalEntity.class))
+                .save(mapper.map(sucursal, SucursalEntidad.class))
                 .map(this::toEntity)
                 .onErrorResume(
                         e -> {
                             log.error("Error ejecutando el guardado de la entidad Sucursal", e);
-                            return Mono.error(new RuntimeException("Error al intentar guardar la entidad Sucursal", e));
+                            return Mono.error(new PruebaExcepcion("Error al intentar guardar la entidad Sucursal", e));
                         });
 
     }
@@ -42,7 +43,7 @@ public class SucursalRepositoryAdapter extends ReactiveAdapterOperations<Sucursa
                 .onErrorResume(
                         e -> {
                             log.error("Error ejecutando la actualización del nombre Sucursal", e);
-                            return Mono.error(new RuntimeException("Error al actualizar la entidad Sucursal", e));
+                            return Mono.error(new PruebaExcepcion("Error al actualizar la entidad Sucursal", e));
                         });
     }
 }

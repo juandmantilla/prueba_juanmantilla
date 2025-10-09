@@ -1,7 +1,9 @@
 # 🧱 Prueba Técnica – Juan Mantilla
+
 ### Implementación de Arquitectura Limpia (Clean Architecture Scaffold)
 
-Este repositorio contiene el desarrollo de la **prueba técnica** orientada a la implementación de una **arquitectura limpia (Clean Architecture)**.
+Este repositorio contiene el desarrollo de la **prueba técnica** orientada a la implementación de una **arquitectura
+limpia (Clean Architecture)**.
 
 ---
 
@@ -25,16 +27,13 @@ Este repositorio contiene el desarrollo de la **prueba técnica** orientada a la
    git pull origin develop
    ```
 
-2. **Configurar variables de conexión**
-- Editar el archivo `application.yml` o las propiedades de conexión en `PostgresqlConnectionProperties.java`.
-- Verificar los parámetros del host, usuario y contraseña.
-
 3. **Iniciar la aplicación**
    ```bash
    ./gradlew bootRun
    ```
 
 4. **Verificar la ejecución**
+
 - La aplicación estará disponible en:
   ```
   http://localhost:8080
@@ -42,19 +41,45 @@ Este repositorio contiene el desarrollo de la **prueba técnica** orientada a la
 
 ---
 
+## 💾 Modelo de Datos
+erDiagram
+FRANQUICIA ||--o{ SUCURSAL : tiene
+SUCURSAL ||--o{ PRODUCTO : contiene
+
+    FRANQUICIA {
+        int id PK
+        varchar nombre UK
+    }
+    
+    SUCURSAL {
+        int id PK
+        varchar nombre
+        int franquicia_id FK
+    }
+    
+    PRODUCTO {
+        int id PK
+        varchar nombre
+        int stock
+        int sucursal_id FK
+    }
+
+
+
+
 ## 🧪 Pruebas con Postman
 
 Se incluye una colección de **Postman** para probar los endpoints expuestos.
 
 📁 Ruta de la colección:
-```
-/postman/Collection_Prueba_Tecnica.json
-```
----
 
+```
+/postman/Coleccion_Prueba_Tecnica.json
+```
+
+---
 
 ## 🧑‍💻 Autor
 
 **Juan David Mantilla López**  
-Desarrollador Backend | Java | AWS | Arquitecturas Limpias  
 📧 [juandmantilla@outlook.com](mailto:juandmantilla@outlook.com)

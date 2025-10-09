@@ -6,7 +6,7 @@ import org.springframework.data.repository.query.ReactiveQueryByExampleExecutor;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;
 
-public interface ProductoRepository extends ReactiveCrudRepository<ProductoEntity, Integer>, ReactiveQueryByExampleExecutor<ProductoEntity> {
+public interface ProductoRepositorio extends ReactiveCrudRepository<ProductoEntidad, Integer>, ReactiveQueryByExampleExecutor<ProductoEntidad> {
 
     @Query("""
             SELECT *

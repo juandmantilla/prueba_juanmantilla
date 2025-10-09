@@ -9,7 +9,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @Table("producto")
-public class ProductoEntity {
+public class ProductoEntidad {
     @Id
     private Integer id;
     private String nombre;
