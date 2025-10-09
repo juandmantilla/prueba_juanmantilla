@@ -1,47 +1,60 @@
-# Proyecto Base Implementando Clean Architecture
+# 🧱 Prueba Técnica – Juan Mantilla
+### Implementación de Arquitectura Limpia (Clean Architecture Scaffold)
 
-## Antes de Iniciar
+Este repositorio contiene el desarrollo de la **prueba técnica** orientada a la implementación de una **arquitectura limpia (Clean Architecture)**.
 
-Empezaremos por explicar los diferentes componentes del proyectos y partiremos de los componentes externos, continuando con los componentes core de negocio (dominio) y por último el inicio y configuración de la aplicación.
+---
 
-Lee el artículo [Clean Architecture — Aislando los detalles](https://medium.com/bancolombia-tech/clean-architecture-aislando-los-detalles-4f9530f35d7a)
+## 🚀 Tecnologías principales
 
-# Arquitectura
+- **Java 21**
+- **Spring Boot (WebFlux + R2DBC)**
+- **Gradle** como gestor de dependencias
+- **PostgreSQL / Neon DB** (Base de datos relacional & Gestor de base de datos pública)
+- **Reactor (Mono / Flux)** para programación reactiva
 
-![Clean Architecture](https://miro.medium.com/max/1400/1*ZdlHz8B0-qu9Y-QO3AXR_w.png)
+---
 
-## Domain
+## ⚙️ Instalación y ejecución local
 
-Es el módulo más interno de la arquitectura, pertenece a la capa del dominio y encapsula la lógica y reglas del negocio mediante modelos y entidades del dominio.
+1. **Clonar el repositorio**
+   ```bash
+   git clone https://github.com/juandmantilla/prueba_juanmantilla.git
+   cd prueba_juanmantilla
+   git checkout develop
+   git pull origin develop
+   ```
 
-## Usecases
+2. **Configurar variables de conexión**
+- Editar el archivo `application.yml` o las propiedades de conexión en `PostgresqlConnectionProperties.java`.
+- Verificar los parámetros del host, usuario y contraseña.
 
-Este módulo gradle perteneciente a la capa del dominio, implementa los casos de uso del sistema, define lógica de aplicación y reacciona a las invocaciones desde el módulo de entry points, orquestando los flujos hacia el módulo de entities.
+3. **Iniciar la aplicación**
+   ```bash
+   ./gradlew bootRun
+   ```
 
-## Infrastructure
+4. **Verificar la ejecución**
+- La aplicación estará disponible en:
+  ```
+  http://localhost:8080
+  ```
 
-### Helpers
+---
 
-En el apartado de helpers tendremos utilidades generales para los Driven Adapters y Entry Points.
+## 🧪 Pruebas con Postman
 
-Estas utilidades no están arraigadas a objetos concretos, se realiza el uso de generics para modelar comportamientos
-genéricos de los diferentes objetos de persistencia que puedan existir, este tipo de implementaciones se realizan
-basadas en el patrón de diseño [Unit of Work y Repository](https://medium.com/@krzychukosobudzki/repository-design-pattern-bc490b256006)
+Se incluye una colección de **Postman** para probar los endpoints expuestos.
 
-Estas clases no puede existir solas y debe heredarse su compartimiento en los **Driven Adapters**
+📁 Ruta de la colección:
+```
+/postman/Collection_Prueba_Tecnica.json
+```
+---
 
-### Driven Adapters
 
-Los driven adapter representan implementaciones externas a nuestro sistema, como lo son conexiones a servicios rest,
-soap, bases de datos, lectura de archivos planos, y en concreto cualquier origen y fuente de datos con la que debamos
-interactuar.
+## 🧑‍💻 Autor
 
-### Entry Points
-
-Los entry points representan los puntos de entrada de la aplicación o el inicio de los flujos de negocio.
-
-## Application
-
-Este módulo es el más externo de la arquitectura, es el encargado de ensamblar los distintos módulos, resolver las dependencias y crear los beans de los casos de use (UseCases) de forma automática, inyectando en éstos instancias concretas de las dependencias declaradas. Además inicia la aplicación (es el único módulo del proyecto donde encontraremos la función “public static void main(String[] args)”.
-
-**Los beans de los casos de uso se disponibilizan automaticamente gracias a un '@ComponentScan' ubicado en esta capa.**
+**Juan David Mantilla López**  
+Desarrollador Backend | Java | AWS | Arquitecturas Limpias  
+📧 [juandmantilla@outlook.com](mailto:juandmantilla@outlook.com)
