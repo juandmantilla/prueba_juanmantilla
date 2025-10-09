@@ -3,18 +3,16 @@ package co.com.juan.mantilla.r2dbc.producto;
 import co.com.juan.mantilla.model.producto.Producto;
 import co.com.juan.mantilla.model.producto.gateways.ProductoGateway;
 import co.com.juan.mantilla.r2dbc.helper.ReactiveAdapterOperations;
+import lombok.extern.slf4j.Slf4j;
 import org.reactivecommons.utils.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 @Component
 public class ProductoRepositoryAdapter extends ReactiveAdapterOperations<Producto, ProductoEntity, Integer, ProductoRepository> implements ProductoGateway {
-
-    private static final Logger log = LoggerFactory.getLogger(ProductoRepositoryAdapter.class);
-
+    
     public ProductoRepositoryAdapter(ProductoRepository repository, ObjectMapper mapper) {
         super(repository, mapper, d -> mapper.map(d, Producto.class));
     }

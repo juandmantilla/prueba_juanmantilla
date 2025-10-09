@@ -25,9 +25,11 @@ cors:
 
 adapters:
   r2dbc:
-    host: localhost
+    host: ep-small-art-adtoogeh-pooler.c-2.us-east-1.aws.neon.tech
     port: 5432
     database: sistema_franquicias
     schema: sch_franquicias
-    username: postgres
-    password: 15987
+    username: neondb_owner
+    password: npg_TKLhg3HeEsr5
+    sslmode: require
+

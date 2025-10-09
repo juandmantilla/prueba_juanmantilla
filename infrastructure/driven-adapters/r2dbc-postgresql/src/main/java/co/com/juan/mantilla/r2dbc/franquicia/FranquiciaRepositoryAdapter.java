@@ -14,7 +14,7 @@ import java.util.logging.Handler;
 @Component
 public class FranquiciaRepositoryAdapter extends ReactiveAdapterOperations<Franquicia, FranquiciaEntity, Integer, FranquiciaRepository> implements FranquiciaGateway {
 
-    private static final Logger log = LoggerFactory.getLogger(Handler.class);
+    private static final Logger log = LoggerFactory.getLogger(FranquiciaRepositoryAdapter.class);
 
     public FranquiciaRepositoryAdapter(FranquiciaRepository repository, ObjectMapper mapper) {
         super(repository, mapper, d -> mapper.map(d, Franquicia.class));
