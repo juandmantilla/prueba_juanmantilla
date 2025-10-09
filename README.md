@@ -10,7 +10,7 @@ Este repositorio contiene el desarrollo de la **prueba técnica** orientada a la
 - **Java 21**
 - **Spring Boot (WebFlux + R2DBC)**
 - **Gradle** como gestor de dependencias
-- **PostgreSQL / Neon DB** (Base de datos relacional & Gestor de base de datos pública)
+- **PostgreSQL / Neon Platform** (Base de datos relacional & Gestor de base de datos pública)
 - **Reactor (Mono / Flux)** para programación reactiva
 
 ---
