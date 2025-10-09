@@ -1,5 +1,6 @@
 package co.com.juan.mantilla.r2dbc.config;
 
+import io.r2dbc.postgresql.client.SSLMode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -7,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class PostgreSQLConnectionPoolTest {
@@ -28,6 +30,7 @@ class PostgreSQLConnectionPoolTest {
         when(properties.schema()).thenReturn("schema");
         when(properties.username()).thenReturn("username");
         when(properties.password()).thenReturn("password");
+        when(properties.sslmode()).thenReturn(mock(SSLMode.class));
     }
 
     @Test
