@@ -1,2 +1,2 @@
-# prueba_nequi
-Repositorio que incluye la prueba técnica Nequi
+# Prueba Técnica
+Repositorio que incluye la prueba técnica
