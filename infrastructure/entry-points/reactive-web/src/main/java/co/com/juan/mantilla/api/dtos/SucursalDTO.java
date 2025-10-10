@@ -1,4 +1,7 @@
 package co.com.juan.mantilla.api.dtos;
 
-public record SucursalDTO(Integer id, String nombre, Integer franquiciaId) {
+import lombok.Builder;
+
+@Builder
+public record SucursalDTO(String nombre, Integer franquiciaId) {
 }

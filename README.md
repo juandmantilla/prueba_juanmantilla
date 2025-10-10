@@ -42,10 +42,14 @@ limpia (Clean Architecture)**.
 ---
 
 ## 💾 Modelo de Datos
-erDiagram
-FRANQUICIA ||--o{ SUCURSAL : tiene
-SUCURSAL ||--o{ PRODUCTO : contiene
+El modelo de datos está compuesto de tres tablas configuradas de la siguiente manera:
 
+* La entidad Franquicia puede tener una o muchas Sucursales.
+* Una Sucursal solo se relaciona con una Franquicia.
+* Una Sucursal puede operar con uno muchos Productos.
+* Un Producto solo se relaciona con una Sucursal.
+
+ ```
     FRANQUICIA {
         int id PK
         varchar nombre UK
@@ -63,8 +67,7 @@ SUCURSAL ||--o{ PRODUCTO : contiene
         int stock
         int sucursal_id FK
     }
-
-
+```
 
 
 ## 🧪 Pruebas con Postman

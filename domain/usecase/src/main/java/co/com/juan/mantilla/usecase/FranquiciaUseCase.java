@@ -5,9 +5,8 @@ import co.com.juan.mantilla.model.franquicia.puertos.FranquiciaPuerto;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
-
 @RequiredArgsConstructor
-public class FranquiciaCasoUso {
+public class FranquiciaUseCase {
 
     private final FranquiciaPuerto repository;
 

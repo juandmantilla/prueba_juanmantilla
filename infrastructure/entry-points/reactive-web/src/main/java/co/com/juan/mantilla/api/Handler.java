@@ -1,12 +1,14 @@
 package co.com.juan.mantilla.api;
 
+import co.com.juan.mantilla.api.dtos.FranquiciaDTO;
 import co.com.juan.mantilla.api.dtos.MensajeRespuestaDTO;
+import co.com.juan.mantilla.api.dtos.ProductoDTO;
 import co.com.juan.mantilla.model.franquicia.Franquicia;
 import co.com.juan.mantilla.model.producto.Producto;
 import co.com.juan.mantilla.model.sucursal.Sucursal;
-import co.com.juan.mantilla.usecase.FranquiciaCasoUso;
-import co.com.juan.mantilla.usecase.ProductoCasoUso;
-import co.com.juan.mantilla.usecase.SucursalCasoUso;
+import co.com.juan.mantilla.usecase.FranquiciaUseCase;
+import co.com.juan.mantilla.usecase.ProductoUseCase;
+import co.com.juan.mantilla.usecase.SucursalUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -19,69 +21,99 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 @RequiredArgsConstructor
 public class Handler {
 
-    private final FranquiciaCasoUso franquiciaCasoUso;
-    private final ProductoCasoUso productoCasoUso;
-    private final SucursalCasoUso sucursalCasoUso;
+    private final FranquiciaUseCase franquiciaUseCase;
+    private final ProductoUseCase productoUseCase;
+    private final SucursalUseCase sucursalUseCase;
 
     public Mono<ServerResponse> agregarFranquicia(ServerRequest serverRequest) {
 
         return serverRequest
                 .bodyToMono(Franquicia.class)
-                .flatMap(franquiciaCasoUso::agregarFranquicia)
-                .flatMap(saved -> ServerResponse.ok().contentType(APPLICATION_JSON)
-                        .bodyValue(saved))
-                .onErrorResume(e -> ServerResponse.badRequest().bodyValue("Error al momento de agregar la Franquicia :" + e.getMessage()));
+                .flatMap(franquiciaUseCase::agregarFranquicia)
+                .flatMap(saved -> ServerResponse
+                        .ok()
+                        .contentType(APPLICATION_JSON)
+                        .bodyValue(FranquiciaDTO.builder().nombre(saved.getNombre()).build()))
+                .onErrorResume(e -> ServerResponse.badRequest().bodyValue(
+                        MensajeRespuestaDTO.builder()
+                                .mensaje(e.getMessage()).build()
+
+                ));
     }
 
     public Mono<ServerResponse> actualizarNombreFranquicia(ServerRequest serverRequest) {
 
         return serverRequest.bodyToMono(Franquicia.class)
-                .flatMap(franquiciaCasoUso::actualizarNombreFranquicia)
-                .flatMap(updated -> ServerResponse.ok().contentType(APPLICATION_JSON).bodyValue(updated))
-                .onErrorResume(e -> ServerResponse.badRequest().bodyValue("Error al momento de actualizar el nombre de la franquicia :" + e.getMessage()));
+                .flatMap(franquiciaUseCase::actualizarNombreFranquicia)
+                .flatMap(updated -> ServerResponse
+                        .ok()
+                        .contentType(APPLICATION_JSON)
+                        .bodyValue(FranquiciaDTO.builder().nombre(updated.getNombre()).build()))
+                .onErrorResume(e -> ServerResponse.badRequest().bodyValue(MensajeRespuestaDTO.builder().mensaje(e.getMessage()).build()));
     }
 
     public Mono<ServerResponse> agregarProductoASucursal(ServerRequest serverRequest) {
 
         return serverRequest
                 .bodyToMono(Producto.class)
-                .flatMap(productoCasoUso::agregarProductoASucursal)
-                .flatMap(saved -> ServerResponse.ok().contentType(APPLICATION_JSON).bodyValue(saved))
+                .flatMap(productoUseCase::agregarProductoASucursal)
+                .flatMap(saved -> ServerResponse
+                        .ok()
+                        .contentType(APPLICATION_JSON)
+                        .bodyValue(ProductoDTO.builder().nombre(saved.getNombre()).stock(saved.getStock()).nombreSucursal(saved.getSucursalId().toString()).build()
+
+                        ))
                 .onErrorResume(e -> ServerResponse.badRequest().bodyValue(MensajeRespuestaDTO.builder().mensaje(e.getMessage())));
     }
 
     public Mono<ServerResponse> obtenerProductoMayorStock(ServerRequest serverRequest) {
 
-        var productos = productoCasoUso.obtenerProductoMayorStock();
+        var productos = productoUseCase.obtenerProductoMayorStock()
+                .map(prod -> ProductoDTO.builder()
+                        .nombre(prod.getNombre())
+                        .stock(prod.getStock())
+                        .nombreSucursal(prod.getSucursalId().toString())
+                        .build());
 
-        return ServerResponse.ok().contentType(APPLICATION_JSON).body(productos, Producto.class);
+        return ServerResponse.ok()
+                .contentType(APPLICATION_JSON)
+                .body(productos, ProductoDTO.class)
+                .onErrorResume(e -> ServerResponse.badRequest().bodyValue(MensajeRespuestaDTO.builder().mensaje(e.getMessage()).build()));
     }
 
     public Mono<ServerResponse> modificarStock(ServerRequest serverRequest) {
 
         return serverRequest
                 .bodyToMono(Producto.class)
-                .flatMap(productoCasoUso::modificarStock)
+                .flatMap(productoUseCase::modificarStock)
                 .flatMap(updated -> ServerResponse.ok().contentType(APPLICATION_JSON).bodyValue(updated))
-                .onErrorResume(e -> ServerResponse.badRequest().bodyValue("Error al momento de modificar el Stock de Producto :" + e.getMessage()));
+                .onErrorResume(e -> ServerResponse.badRequest().bodyValue(MensajeRespuestaDTO.builder().mensaje(e.getMessage()).build()));
     }
 
     public Mono<ServerResponse> agregarSucursalAFranquicia(ServerRequest serverRequest) {
 
         return serverRequest
                 .bodyToMono(Sucursal.class)
-                .flatMap(sucursalCasoUso::agregarSucursalAFranquicia)
-                .flatMap(saved -> ServerResponse.ok().contentType(APPLICATION_JSON).bodyValue(saved))
-                .onErrorResume(e -> ServerResponse.badRequest().bodyValue("Error al momento de agregar una Sucursal : " + e.getMessage()));
+                .flatMap(sucursalUseCase::agregarSucursalAFranquicia)
+                .flatMap(saved -> ServerResponse
+                        .ok()
+                        .contentType(APPLICATION_JSON)
+                        .bodyValue(Sucursal.builder().nombre(saved.getNombre()))
+                )
+                .onErrorResume(e -> ServerResponse.badRequest().bodyValue(MensajeRespuestaDTO.builder().mensaje(e.getMessage()).build()));
     }
 
     public Mono<ServerResponse> actualizarNombreSucursal(ServerRequest serverRequest) {
 
         return serverRequest
                 .bodyToMono(Sucursal.class)
-                .flatMap(sucursalCasoUso::actualizarNombreSucursal)
-                .flatMap(saved -> ServerResponse.ok().contentType(APPLICATION_JSON).bodyValue(saved))
-                .onErrorResume(e -> ServerResponse.badRequest().bodyValue("Error al momento de actualizar el nombre de la Sucursal: " + e.getMessage()));
+                .flatMap(sucursalUseCase::actualizarNombreSucursal)
+                .flatMap(updated -> ServerResponse
+                        .ok()
+                        .contentType(APPLICATION_JSON)
+                        .bodyValue(Sucursal.builder().nombre(updated.getNombre())
+                        ))
+                .onErrorResume(e -> ServerResponse.badRequest().bodyValue(MensajeRespuestaDTO.builder().mensaje(e.getMessage()).build()));
     }
 
 }

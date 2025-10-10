@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
-public class SucursalCasoUso {
+public class SucursalUseCase {
 
     private final SucursalPuerto repository;
 

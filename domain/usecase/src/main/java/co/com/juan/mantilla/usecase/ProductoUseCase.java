@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 
 
 @RequiredArgsConstructor
-public class ProductoCasoUso {
+public class ProductoUseCase {
 
     private final ProductoPuerto repository;
 
