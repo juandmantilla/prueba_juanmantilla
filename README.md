@@ -27,10 +27,15 @@ limpia (Clean Architecture)**.
    git pull origin develop
    ```
 
+2. **Compilar el proyecto**
+``` bash
+./gradlew build
+```
+
 3. **Iniciar la aplicación**
-   ```bash
-   ./gradlew bootRun
-   ```
+```bash
+./gradlew bootRun
+```
 
 4. **Verificar la ejecución**
 
